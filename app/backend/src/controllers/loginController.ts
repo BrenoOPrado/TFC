@@ -13,4 +13,11 @@ export default class LoginController {
     }
     res.status(status).json(message);
   };
+
+  validate = async (req: Request, res: Response): Promise<void> => {
+    const result = await this.service.validate(req.headers);
+    const { status, message } = result;
+
+    res.status(status).json(message);
+  };
 }

@@ -1,4 +1,4 @@
-import { Secret, SignOptions, verify, sign } from 'jsonwebtoken';
+import { Secret, SignOptions, verify, sign, decode } from 'jsonwebtoken';
 import { IToken } from '../interfaces';
 import Exeption from './exception';
 
@@ -38,5 +38,12 @@ export default class AuthMiddleware {
       const message = 'Expired or invalid token';
       throw new Exeption(status, message);
     }
+  };
+
+  decodeToken = async (token: string) => {
+    const decoded = await decode(token);
+    console.log(decoded);
+
+    return decoded;
   };
 }
