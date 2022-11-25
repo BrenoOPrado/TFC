@@ -9,23 +9,23 @@ module.exports = {
         autoIncrement: true,
         allowNull: false,
       },
-      homeTeam: {
+      home_team: {
         type: Sequelize.INTEGER,
         allowNull: false,
       },
-      homeTeamGoals: {
+      home_team_goals: {
         type: Sequelize.INTEGER,
         allowNull: false,
       },
-      awayTeam: {
+      away_team: {
         type: Sequelize.INTEGER,
         allowNull: false,
       },
-      awayTeamGoals: {
+      away_team_goals: {
         type: Sequelize.INTEGER,
         allowNull: false,
       },
-      inProgress: {
+      in_progress: {
         type: Sequelize.BOOLEAN,
         allowNull: false,
       }

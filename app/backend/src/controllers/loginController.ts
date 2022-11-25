@@ -9,8 +9,8 @@ export default class LoginController {
     const { status, message } = result;
 
     if (result.status !== 200) {
-      res.status(status).json(result.message);
+      res.status(status).json({ message });
     }
-    res.status(status).json({ message });
+    res.status(status).json(message);
   };
 }
