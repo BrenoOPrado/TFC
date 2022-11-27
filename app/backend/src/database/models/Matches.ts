@@ -1,5 +1,6 @@
 import { Model, DataTypes } from 'sequelize';
 import db from '.';
+// import Teams from './Teams';
 
 class Matches extends Model {
   declare id: number;
@@ -12,19 +13,56 @@ class Matches extends Model {
 
 Matches.init({
   id: {
-    type: DataTypes.INTEGER,
     primaryKey: true,
+    type: DataTypes.INTEGER,
+    autoIncrement: true,
+    allowNull: false,
   },
-  homeTeam: DataTypes.INTEGER,
-  homeTeamGoals: DataTypes.INTEGER,
-  awayTeam: DataTypes.INTEGER,
-  awayTeamGoals: DataTypes.INTEGER,
-  inProgress: DataTypes.BOOLEAN,
+  homeTeam: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    references: { model: 'teams', key: 'id' },
+    onUpdate: 'CASCADE',
+    onDelete: 'CASCADE',
+  },
+  homeTeamGoals: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+  },
+  awayTeam: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    references: { model: 'teams', key: 'id' },
+    onUpdate: 'CASCADE',
+    onDelete: 'CASCADE',
+  },
+  awayTeamGoals: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+  },
+  inProgress: {
+    type: DataTypes.BOOLEAN,
+    allowNull: false,
+  },
 }, {
   underscored: true,
   sequelize: db,
   timestamps: false,
-  tableName: 'matches',
+  modelName: 'matches',
 });
+
+/* Matches.belongsTo(Teams, {
+  foreignKey: 'homeTeam',
+});
+Matches.belongsTo(Teams, {
+  foreignKey: 'awayTeam',
+});
+
+Teams.hasMany(Matches, {
+  foreignKey: 'homeTeam',
+});
+Teams.hasMany(Matches, {
+  foreignKey: 'awayTeam',
+}); */
 
 export default Matches;

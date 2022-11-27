@@ -14,15 +14,27 @@ Users.init({
     type: DataTypes.INTEGER,
     primaryKey: true,
   },
-  username: DataTypes.STRING,
-  role: DataTypes.STRING,
-  email: DataTypes.STRING,
-  password: DataTypes.STRING,
+  username: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  role: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  email: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  password: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
 }, {
   underscored: true,
   sequelize: db,
   timestamps: false,
-  tableName: 'users',
+  modelName: 'users',
 });
 
 export default Users;

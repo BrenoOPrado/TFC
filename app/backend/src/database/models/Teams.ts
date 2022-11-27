@@ -10,13 +10,18 @@ Teams.init({
   id: {
     type: DataTypes.INTEGER,
     primaryKey: true,
+    autoIncrement: true,
+    allowNull: false,
   },
-  teamName: DataTypes.STRING,
+  teamName: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
 }, {
   underscored: true,
   sequelize: db,
   timestamps: false,
-  tableName: 'teams',
+  modelName: 'teams',
 });
 
 export default Teams;

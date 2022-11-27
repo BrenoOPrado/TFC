@@ -1,4 +1,4 @@
-import { Secret, SignOptions, verify, sign, decode } from 'jsonwebtoken';
+import { Secret, SignOptions, verify, sign } from 'jsonwebtoken';
 import { IToken } from '../interfaces';
 import Exeption from './exception';
 
@@ -40,10 +40,9 @@ export default class AuthMiddleware {
     }
   };
 
-  decodeToken = async (token: string) => {
-    const decoded = await decode(token);
-    console.log(decoded);
+  /* decodeToken = (token: string) => {
+    const decoded = decode(token);
 
     return decoded;
-  };
+  }; */
 }

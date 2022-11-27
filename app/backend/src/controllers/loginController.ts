@@ -8,16 +8,16 @@ export default class LoginController {
     const result = await this.service.insertLogin(req.body);
     const { status, message } = result;
 
-    if (result.status !== 200) {
+    if (status !== 200) {
       res.status(status).json({ message });
     }
     res.status(status).json(message);
   };
 
-  validate = async (req: Request, res: Response): Promise<void> => {
+  /* validate = async (req: Request, res: Response): Promise<void> => {
     const result = await this.service.validate(req.headers);
     const { status, message } = result;
 
     res.status(status).json(message);
-  };
+  }; */
 }

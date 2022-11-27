@@ -1,5 +1,5 @@
 import { compare } from 'bcryptjs';
-import { IncomingHttpHeaders } from 'http2';
+// import { IncomingHttpHeaders } from 'http2';
 import { IToken, ILogin } from '../interfaces';
 import AuthMiddleware from '../middlewares/authMiddleware';
 import Users from '../database/models/Users';
@@ -18,9 +18,11 @@ export default class LoginService {
       email: body.email,
     } });
 
-    if (user === null || !await compare(body.password, user.password)) {
-      return { status: 401, message: 'Incorrect email or password' };
-    }
+    if (user === null) return { status: 401, message: 'Incorrect email or password' };
+
+    const compared = await compare(body.password, user.password);
+
+    if (!compared) return { status: 401, message: 'Incorrect email or password' };
 
     const { password, ...data } = body;
     const token: IToken = this.auth.generateToken(data);
@@ -28,7 +30,7 @@ export default class LoginService {
     return { status: 200, message: token };
   };
 
-  validate = async (header: IncomingHttpHeaders) => {
+  /* validate = async (header: IncomingHttpHeaders) => {
     if (!header.authorization) {
       return { status: 401, message: 'Unauthorized' };
     }
@@ -47,5 +49,5 @@ export default class LoginService {
     const { role } = user;
 
     return { status: 200, message: role };
-  };
+  }; */
 }
