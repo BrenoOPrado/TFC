@@ -4,20 +4,20 @@ import LoginService from '../services/loginService';
 export default class LoginController {
   constructor(private service = new LoginService()) {}
 
-  insert = async (req: Request, res: Response): Promise<void> => {
+  insert = async (req: Request, res: Response) => {
     const result = await this.service.insertLogin(req.body);
     const { status, message } = result;
 
     if (status !== 200) {
-      res.status(status).json({ message });
+      return res.status(status).json({ message });
     }
-    res.status(status).json(message);
+    return res.status(status).json(message);
   };
 
-  /* validate = async (req: Request, res: Response): Promise<void> => {
-    const result = await this.service.validate(req.headers);
+  validate = async (req: Request, res: Response) => {
+    const result = await this.service.validate(req);
     const { status, message } = result;
 
-    res.status(status).json(message);
-  }; */
+    return res.status(status).json(message);
+  };
 }

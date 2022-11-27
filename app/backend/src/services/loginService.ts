@@ -1,5 +1,6 @@
 import { compare } from 'bcryptjs';
 // import { IncomingHttpHeaders } from 'http2';
+import { Request } from 'express';
 import { IToken, ILogin } from '../interfaces';
 import AuthMiddleware from '../middlewares/authMiddleware';
 import Users from '../database/models/Users';
@@ -30,14 +31,15 @@ export default class LoginService {
     return { status: 200, message: token };
   };
 
-  /* validate = async (header: IncomingHttpHeaders) => {
-    if (!header.authorization) {
+  validate = async (req: Request) => {
+    const { authorization } = req.headers;
+    if (!authorization) {
       return { status: 401, message: 'Unauthorized' };
     }
 
-    this.auth.authenticateToken({ token: header.authorization });
+    this.auth.authenticateToken({ token: authorization });
 
-    const email = await this.auth.decodeToken(header.authorization);
+    const email = await this.auth.decodeToken(authorization);
     const user: Users | null = await this.model.findOne({ where: {
       email,
     } });
@@ -49,5 +51,5 @@ export default class LoginService {
     const { role } = user;
 
     return { status: 200, message: role };
-  }; */
+  };
 }

@@ -4,8 +4,22 @@ import MatchesService from '../services/matchesService';
 export default class MatchesController {
   constructor(private service = new MatchesService()) {}
 
-  findAll = async (_req: Request, res: Response) => {
-    const result = await this.service.findAll();
+  findAll = async (req: Request, res: Response) => {
+    let result;
+    const { inProgress } = req.query;
+
+    if (inProgress === undefined) {
+      result = await this.service.findAll();
+      const { status, message } = result;
+      return res.status(status).json(message);
+    }
+
+    if (inProgress === 'true') {
+      result = await this.service.findInProgress(true);
+    } else {
+      result = await this.service.findInProgress(false);
+    }
+
     const { status, message } = result;
 
     res.status(status).json(message);
