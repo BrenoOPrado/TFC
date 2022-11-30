@@ -16,8 +16,9 @@ export default class LoginController {
 
   validate = async (req: Request, res: Response) => {
     const result = await this.service.validate(req);
-    const { status, message } = result;
 
-    return res.status(status).json(message);
+    if (result !== null) {
+      return res.status(result.status).json(result.message);
+    }
   };
 }

@@ -1,15 +1,11 @@
-import { Secret, SignOptions, verify, sign, decode } from 'jsonwebtoken';
+import { Secret, SignOptions, verify, sign, decode, JwtPayload } from 'jsonwebtoken';
+import Users from '../database/models/Users';
 import { IToken } from '../interfaces';
-import Exeption from './exception';
 
 const TOKEN_SECRET_KEY: Secret = 'jwt_secret';
 
-type Login = {
-  email: string,
-};
-
 export default class AuthMiddleware {
-  generateToken = (data: Login): IToken => {
+  generateToken = (data: Users): IToken => {
     const payload = {
       ...data,
     };
@@ -23,26 +19,26 @@ export default class AuthMiddleware {
     return { token };
   };
 
-  authenticateToken = async (token: IToken): Promise<void> => {
+  authenticateToken = (token: string) => {
     if (!token) {
       const status = 401;
       const message = 'Token not found';
-      throw new Exeption(status, message);
+      return { status, message };
     }
 
     try {
-      verify(token.token, TOKEN_SECRET_KEY);
-      return;
+      verify(token, TOKEN_SECRET_KEY);
+      return null;
     } catch (error) {
       const status = 401;
-      const message = 'Expired or invalid token';
-      throw new Exeption(status, message);
+      const message = 'Token must be a valid token';
+      return { status, message };
     }
   };
 
-  decodeToken = (token: string) => {
+  decodeToken = (token: string): JwtPayload => {
     const decoded = decode(token);
 
-    return decoded;
+    return decoded as JwtPayload;
   };
 }

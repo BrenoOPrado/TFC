@@ -1,5 +1,4 @@
 import { compare } from 'bcryptjs';
-// import { IncomingHttpHeaders } from 'http2';
 import { Request } from 'express';
 import { IToken, ILogin } from '../interfaces';
 import AuthMiddleware from '../middlewares/authMiddleware';
@@ -25,8 +24,7 @@ export default class LoginService {
 
     if (!compared) return { status: 401, message: 'Incorrect email or password' };
 
-    const { password, ...data } = body;
-    const token: IToken = this.auth.generateToken(data);
+    const token: IToken = this.auth.generateToken(user);
 
     return { status: 200, message: token };
   };
@@ -37,19 +35,12 @@ export default class LoginService {
       return { status: 401, message: 'Unauthorized' };
     }
 
-    this.auth.authenticateToken({ token: authorization });
-
-    const email = await this.auth.decodeToken(authorization);
-    const user: Users | null = await this.model.findOne({ where: {
-      email,
-    } });
+    const user = await this.auth.decodeToken(authorization);
 
     if (user === null) {
       return { status: 401, message: 'Unauthorized' };
     }
 
-    const { role } = user;
-
-    return { status: 200, message: role };
+    return { status: 200, message: { role: user.dataValues.role } };
   };
 }

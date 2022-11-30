@@ -15,9 +15,7 @@ export default class TeamsService {
   };
 
   findOne = async (id: string) => {
-    const result: Teams | null = await this.model.findOne({ where: {
-      id,
-    } });
+    const result: Teams | null = await this.model.findOne({ where: { id: Number(id) } });
 
     if (result === null) {
       throw new Exception(404, 'Team not found');
