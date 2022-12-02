@@ -8,18 +8,14 @@ export default class LeaderboardController {
     let result;
 
     if (req.url === '/home') {
-      console.log('foi no home');
-
       result = await this.service.findAllHome();
     } else if (req.url === '/away') {
-      console.log('foi no away');
-
       result = await this.service.findAllAway();
+    } else {
+      result = await this.service.findAll();
     }
+    const { status, message } = result;
 
-    if (result !== undefined) {
-      const { status, message } = result;
-      res.status(status).json(message);
-    }
+    res.status(status).json(message);
   };
 }

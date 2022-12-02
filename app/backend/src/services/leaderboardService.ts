@@ -25,7 +25,8 @@ export default class LeaderboardService {
         .filter((matche: Matches) => Number(matche.homeTeam) === team.id);
 
       if (matchesByHomeTeam.length > 0) {
-        const totalByGame: leaderboard = this.helper.totalPoints(matchesByHomeTeam, 'home');
+        const totalByGame: leaderboard = this.helper
+          .totalPoints(matchesByHomeTeam, 'home', team.id);
 
         const objResult: leaderboard = {
           name: team.teamName,
@@ -51,7 +52,35 @@ export default class LeaderboardService {
         .filter((matche: Matches) => Number(matche.awayTeam) === team.id);
 
       if (matchesByAwayTeam.length > 0) {
-        const totalByGame: leaderboard = this.helper.totalPoints(matchesByAwayTeam, 'away');
+        const totalByGame: leaderboard = this.helper
+          .totalPoints(matchesByAwayTeam, 'away', team.id);
+
+        const objResult: leaderboard = {
+          name: team.teamName,
+          ...totalByGame,
+        };
+
+        this.result.push(objResult);
+      }
+    });
+
+    let orderResult = this.helper.sortResult(this.result);
+    const result = orderResult; orderResult = []; this.result = [];
+
+    return { status: 200, message: result };
+  };
+
+  findAll = async () => {
+    const allMatches: Matches[] = await this.modelMatches.findAll({ where: { inProgress: false } });
+    const allTeams: Teams[] = await this.modelTeams.findAll();
+
+    allTeams.forEach((team) => {
+      const matchesByTeam: Matches[] = allMatches
+        .filter((matche: Matches) => Number(matche.homeTeam) === team.id
+        || Number(matche.awayTeam) === team.id);
+
+      if (matchesByTeam.length > 0) {
+        const totalByGame: leaderboard = this.helper.totalPoints(matchesByTeam, '', team.id);
 
         const objResult: leaderboard = {
           name: team.teamName,

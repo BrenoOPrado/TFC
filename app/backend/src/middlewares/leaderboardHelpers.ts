@@ -40,11 +40,34 @@ export default class LeaderboardHelpers {
     return { goalsFavor, goalsOwn, totalVictories, totalDraws, totalLosses };
   };
 
-  gameResults = (matches: Matches[], url: string) => {
+  gameResultsAll = (matches: Matches[], teamId: number) => {
+    const matcheHomeTeam = matches.filter((matche) => matche.homeTeam === teamId);
+    const matcheAwayTeam = matches.filter((matche) => matche.awayTeam === teamId);
+
+    const homeResults = this.gameResultsHome(matcheHomeTeam);
+    const awayResults = this.gameResultsAway(matcheAwayTeam);
+
+    const result = {
+      goalsFavor: homeResults.goalsFavor + awayResults.goalsFavor,
+      goalsOwn: homeResults.goalsOwn + awayResults.goalsOwn,
+      totalVictories: homeResults.totalVictories + awayResults.totalVictories,
+      totalDraws: homeResults.totalDraws + awayResults.totalDraws,
+      totalLosses: homeResults.totalLosses + awayResults.totalLosses,
+    };
+
+    return result;
+  };
+
+  gameResults = (matches: Matches[], url: string, teamId: number) => {
+    let result;
     if (url === 'home') {
-      return this.gameResultsHome(matches);
+      result = this.gameResultsHome(matches);
+    } else if (url === 'away') {
+      result = this.gameResultsAway(matches);
+    } else {
+      result = this.gameResultsAll(matches, teamId);
     }
-    return this.gameResultsAway(matches);
+    return result;
   };
 
   pointsCalc = (victories: number, draws: number): number => {
@@ -61,9 +84,9 @@ export default class LeaderboardHelpers {
     return result;
   };
 
-  totalPoints = (matches: Matches[], url: string): leaderboard => {
+  totalPoints = (matches: Matches[], url: string, teamId: number): leaderboard => {
     const totalGames = matches.length;
-    const games = this.gameResults(matches, url);
+    const games = this.gameResults(matches, url, teamId);
     const { goalsFavor, goalsOwn, totalVictories, totalDraws } = games;
 
     const totalPoints: number = this.pointsCalc(totalVictories, totalDraws);
