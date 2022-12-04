@@ -119,10 +119,7 @@ export default class LeaderboardHelpers {
     if (b.goalsFavor > a.goalsFavor) {
       return 1;
     }
-    if (b.goalsFavor === a.goalsFavor) {
-      return this.goalsOwn(a, b);
-    }
-    return 0;
+    return this.goalsOwn(a, b);
   };
 
   goalsBalance = (a: leaderboard, b: leaderboard) => {
@@ -132,10 +129,7 @@ export default class LeaderboardHelpers {
     if (b.goalsBalance > a.goalsBalance) {
       return 1;
     }
-    if (b.goalsBalance === a.goalsBalance) {
-      return this.goalsFavor(a, b);
-    }
-    return 0;
+    return this.goalsFavor(a, b);
   };
 
   totalVictories = (a: leaderboard, b: leaderboard) => {
@@ -145,10 +139,7 @@ export default class LeaderboardHelpers {
     if (b.totalVictories > a.totalVictories) {
       return 1;
     }
-    if (b.totalVictories === a.totalVictories) {
-      return this.goalsBalance(a, b);
-    }
-    return 0;
+    return this.goalsBalance(a, b);
   };
 
   sortResult = (arr: leaderboard[]) => arr.sort((a, b) => {
@@ -158,9 +149,6 @@ export default class LeaderboardHelpers {
     if (b.totalPoints > a.totalPoints) {
       return 1;
     }
-    if (b.totalPoints === a.totalPoints) {
-      return this.totalVictories(a, b);
-    }
-    return 0;
+    return this.totalVictories(a, b);
   });
 }
