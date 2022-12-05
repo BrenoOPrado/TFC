@@ -24,17 +24,15 @@ export default class LeaderboardService {
       const matchesByHomeTeam: Matches[] = allMatches
         .filter((matche: Matches) => Number(matche.homeTeam) === team.id);
 
-      if (matchesByHomeTeam.length > 0) {
-        const totalByGame: leaderboard = this.helper
-          .totalPoints(matchesByHomeTeam, 'home', team.id);
+      const totalByGame: leaderboard = this.helper
+        .totalPoints(matchesByHomeTeam, 'home', team.id);
 
-        const objResult: leaderboard = {
-          name: team.teamName,
-          ...totalByGame,
-        };
+      const objResult: leaderboard = {
+        name: team.teamName,
+        ...totalByGame,
+      };
 
-        this.result.push(objResult);
-      }
+      this.result.push(objResult);
     });
 
     let orderResult = this.helper.sortResult(this.result);
@@ -51,17 +49,15 @@ export default class LeaderboardService {
       const matchesByAwayTeam: Matches[] = allMatches
         .filter((matche: Matches) => Number(matche.awayTeam) === team.id);
 
-      if (matchesByAwayTeam.length > 0) {
-        const totalByGame: leaderboard = this.helper
-          .totalPoints(matchesByAwayTeam, 'away', team.id);
+      const totalByGame: leaderboard = this.helper
+        .totalPoints(matchesByAwayTeam, 'away', team.id);
 
-        const objResult: leaderboard = {
-          name: team.teamName,
-          ...totalByGame,
-        };
+      const objResult: leaderboard = {
+        name: team.teamName,
+        ...totalByGame,
+      };
 
-        this.result.push(objResult);
-      }
+      this.result.push(objResult);
     });
 
     let orderResult = this.helper.sortResult(this.result);
@@ -79,16 +75,14 @@ export default class LeaderboardService {
         .filter((matche: Matches) => Number(matche.homeTeam) === team.id
         || Number(matche.awayTeam) === team.id);
 
-      if (matchesByTeam.length > 0) {
-        const totalByGame: leaderboard = this.helper.totalPoints(matchesByTeam, '', team.id);
+      const totalByGame: leaderboard = this.helper.totalPoints(matchesByTeam, '', team.id);
 
-        const objResult: leaderboard = {
-          name: team.teamName,
-          ...totalByGame,
-        };
+      const objResult: leaderboard = {
+        name: team.teamName,
+        ...totalByGame,
+      };
 
-        this.result.push(objResult);
-      }
+      this.result.push(objResult);
     });
 
     let orderResult = this.helper.sortResult(this.result);

@@ -18,11 +18,11 @@ export default class LoginService {
       email: body.email,
     } });
 
-    if (user === null) return { status: 401, message: 'Incorrect email or password' };
+    if (user === null) return { status: 401, message: { message: 'Incorrect email or password' } };
 
     const compared = await compare(body.password, user.password);
 
-    if (!compared) return { status: 401, message: 'Incorrect email or password' };
+    if (!compared) return { status: 401, message: { message: 'Incorrect email or password' } };
 
     const token: IToken = this.auth.generateToken(user);
 
@@ -32,13 +32,13 @@ export default class LoginService {
   validate = async (req: Request) => {
     const { authorization } = req.headers;
     if (!authorization) {
-      return { status: 401, message: 'Unauthorized' };
+      return { status: 401, message: { message: 'Unauthorized' } };
     }
 
     const user = await this.auth.decodeToken(authorization);
 
     if (user === null) {
-      return { status: 401, message: 'Unauthorized' };
+      return { status: 401, message: { message: 'Unauthorized' } };
     }
 
     return { status: 200, message: { role: user.dataValues.role } };

@@ -8,9 +8,6 @@ export default class LoginController {
     const result = await this.service.insertLogin(req.body);
     const { status, message } = result;
 
-    if (status !== 200) {
-      return res.status(status).json({ message });
-    }
     return res.status(status).json(message);
   };
 
